@@ -1,6 +1,15 @@
 h1 {
-    border: 2px #eee solid;
-    color: brown;
+    border: 2px #00FF00 solid;
+    color: green;
     text-align: center;
     padding: 10px;
+}
+table{
+    border-collapse: collapse;
+    width:100%
+}
+td, th {
+  border: 1px solid #00FF00;
+  text-align:center;
+  padding: 8px;
 }

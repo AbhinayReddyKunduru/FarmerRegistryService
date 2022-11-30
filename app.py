@@ -1,17 +1,30 @@
 import sqlite3
 
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template,url_for,redirect
 app = Flask(__name__)
 
 L = list()
+# Home Page for our website
 @app.route("/")
 def index():
-    sql_query = 'SELECT * FROM FARMER_DETAILS;'
-    curser = sqlite3.connect('identifier.sqlite')
-    curser.execute(sql_query)
-
-
     return render_template('index.html', name='PyCharm')
+
+@app.route("/login",methods=['GET','POST'])
+def login():
+    connection = sqlite3.connect('identifier.sqlite')
+
+    cur = connection.cursor()
+    cur.execute("SELECT EMAIL FROM SINEUP")
+    all_emails = cur.fetchall()
+
+
+    error = None
+    if request.method == 'POST':
+        if tuple(request.form['Email']) not in all_emails or request.form['password'] != cur.execute("SELECT PASSWORD FROM SINEUP WHERE EMAIL=request.form['Email']").fetchall()[0][0]:
+            error = 'Invalid credintials Try again'
+        else:
+            return redirect('/')
+    return render_template('login.html', error=error)
 
 @app.route('/farmer', methods=['POST'])
 def create_farmer():
@@ -32,7 +45,14 @@ def create_farmer():
     return jsonify("Succss")
 
 @app.route('/get_farmer_data', methods=['GET'])
-def send_data():
-    return jsonify(L)
+def farmer_details():
+    connection = sqlite3.connect('identifier.sqlite')
+
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM FARMER_DETAILS")
+    rows = cur.fetchall()
+    return render_template('farmer_details.html', items=rows)
+
+
 
 
