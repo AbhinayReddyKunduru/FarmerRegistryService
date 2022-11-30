@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FR Login Page</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+
+</head>
+<body>
+<h1>Farmer_Registry Login Page</h1>
+<h2>Please Login</h2>
+
+<form action ="" method ="POST">
+    <input type="text" placeholder="Type Email" name="Email" value="{{request.form.Email }}">
+    <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}">
+    <input type ="submit" value="Login">
+
+</form>
+{% if error %}
+    <p> <strong>Error</strong>{{ error }}</p>
+{% endif %}
+</body>
+</html>

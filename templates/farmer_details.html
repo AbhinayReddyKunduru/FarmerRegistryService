@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Farmer Details</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+
+</head>
+<body>
+<h1>ALL FARMERS DETAILS</h1>
+
+<table>
+    <tr>
+        <th>Farmer_Id</th>
+        <th>Farmer_Name</th>
+        <th>Mobile_Number</th>
+        <th>Village</th>
+        <th>Address</th>
+    </tr>
+    {% for items in items %}
+    <tr>
+    <td>{{items[0]}}</td>
+    <td>{{items[1]}}</td>
+    <td>{{items[2]}}</td>
+    <td>{{items[3]}}</td>
+    <td>{{items[4]}}</td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+
+
+</html>
