@@ -9,6 +9,7 @@ L = list()
 def index():
     return render_template('index.html', name='PyCharm')
 
+
 @app.route("/login",methods=['GET','POST'])
 def login():
     connection = sqlite3.connect('identifier.sqlite')
@@ -29,6 +30,8 @@ def login():
 
 @app.route('/sineup',methods=['POST','GET'])
 def sineup():
+
+    # print(type(request.content_type))
     connection = sqlite3.connect('identifier.sqlite')
 
     if request.method =='POST':
@@ -40,8 +43,10 @@ def sineup():
     return render_template('sineup.html')
 
 
-@app.route('/farmer', methods=['POST','PUT'])
+@app.route('/farmer', methods=['POST','PUT','GET'])
 def create_farmer():
+
+    # print(request.content_type)
     content = request.json
     # print(content)
     # L.append(content)
@@ -49,7 +54,6 @@ def create_farmer():
     # connection.executescript(f.read())
 
     connection = sqlite3.connect('identifier.sqlite')
-
     cur = connection.cursor()
 
     if request.method == 'PUT':
@@ -58,9 +62,18 @@ def create_farmer():
                     (content['FARMER_NAME'],content['MOBILE_NUMBER'],content['VILLAGE'],content['ADDRESS'],content['FARMER_ID']))
 
     elif request.method == 'POST':
-        for i in range(len(L)):
+        if request.content_type =='application/json':
             cur.execute("INSERT INTO FARMER_DETAILS (FARMER_ID,FARMER_NAME,MOBILE_NUMBER,VILLAGE_NAME,ADDRESS) "
-                    "VALUES (?, ?,?,?,?)",(L[i]['FARMER_ID'],L[i]['FARMER_NAME'],L[i]['MOBILE_NUMBER'],L[i]['VILLAGE'],L[i]['ADDRESS']))
+                    "VALUES (?, ?,?,?,?)",(content['FARMER_ID'],content['FARMER_NAME'],content['MOBILE_NUMBER'],content['VILLAGE'],content['ADDRESS']))
+        else:
+            cur.execute("INSERT INTO FARMER_DETAILS VALUES(?,?,?,?,?)",
+                        (request.form['FARMER_ID'],request.form['FARMER_NAME'],request.form['MOBILE_NUMBER'] ,request.form['VILLAGE'],request.form['ADDRESS']))
+
+    else:
+        return render_template('create_farmer.html')
+
+
+
     connection.commit()
     connection.close()
 

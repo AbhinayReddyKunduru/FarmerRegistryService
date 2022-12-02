@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Farmer Details Entry Page</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+
+</head>
+<body>
+<h1>Farmer Details Entry Page</h1>
+<form method="POST" action="">
+    <input type="number" name ="FARMER_ID" value="{{ request.form.FARMER_ID }} " placeholder="Type FARMER ID">
+    <input type="text" name="FARMER_NAME" value="{{ request.form.FARMER_NAME }}" PLACEHOLDER="type FARMER NAME">
+    <input type="number" name="MOBILE_NUMBER" value="{{ request.form.MOBILE_NUMBER }}" PLACEHOLDER="type Mobile Number">
+    <input type="text" name="VILLAGE" value="{{ request.form.VILLAGE }}" PLACEHOLDER="type VILLAGE NAME">
+    <input type="text" name="ADDRESS" value="{{ request.form.ADDRESS }}" PLACEHOLDER="type ADDRESS">
+    <input type="submit" value="submit" >
+
+</form>
+
+
+</body>
+
+</html>
