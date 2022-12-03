@@ -1,14 +1,15 @@
 import sqlite3
 
-from flask import Flask, request, jsonify, render_template,redirect
+from flask import Flask, request, jsonify, render_template, redirect
 app = Flask(__name__)
 
 L = list()
-# Home Page for our website
 @app.route("/")
 def index():
-    return render_template('index.html', name='PyCharm')
-
+    return render_template('index.html')
+@app.route("/home",methods=['GET'])
+def home():
+    return render_template("home.html")
 
 @app.route("/login",methods=['GET','POST'])
 def login():
@@ -22,7 +23,7 @@ def login():
 
         for user in users:
             if request.form['Email'] == user[0] and request.form['password'] == user[1]:
-                return redirect('/')
+                return redirect('/home')
 
         error = 'Invalid credintials Try again'
 
@@ -71,8 +72,6 @@ def create_farmer():
 
     else:
         return render_template('create_farmer.html')
-
-
 
     connection.commit()
     connection.close()

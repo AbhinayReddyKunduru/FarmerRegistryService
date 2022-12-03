@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FarmerRegestryHomePage</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+
+</head>
+<body>
+<h1>Farmer_Registry Home Page</h1>
+<a href={{ url_for('create_farmer') }}><button>Enter Farmer Details</button></a><br>
+<a href={{ url_for('farmer_details') }}> <button> Get Farmer_details </button> </a>
+
+</body>
+
+</html>

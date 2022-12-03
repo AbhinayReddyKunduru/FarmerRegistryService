@@ -2,12 +2,16 @@
 <html lang ="en">
 <head>
     <meta charset="UTF-8">
-    <title>FarmerRegestryHomePage</title>
+    <title>FarmerRegestry</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
 
 </head>
 <body>
-<h1>Farmer_Registry Home Page</h1>
+<h1>Farmer_Registry Root Page</h1>
+
+
+<a href="{{ url_for('login') }}">Login</a>
+<a href="{{ url_for('sineup') }}">Sineup</a>
 </body>
 
 </html>
