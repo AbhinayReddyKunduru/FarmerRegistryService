@@ -1,126 +1,171 @@
-
-import sqlite3
-from flask import Flask, render_template, request, url_for, redirect,jsonify
-from flask_mysqldb import MySQL
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc
+from sqlalchemy.exc import DatabaseError
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'farmer_registry'
-mysql = MySQL(app)
+app.config['SECRET_KEY'] = 'hardsecretkey'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:''@localhost/farmer_registry1'
+app.config['SQLALCEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
 
 
-# L = list()
+# @app.errorhandler(exc.SQLAlchemyError)
+# def handle_db_exceptions(error):
+#     db.session.rollback()
+
+
+class Farmer(db.Model):
+    farmer_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), unique=True)
+    mobile_number = db.Column(db.String(100), unique=True)
+    village_name = db.Column(db.String(100))
+    address = db.Column(db.String(250))
+
+    def __init__(self, username, mobile_number, village_name, address):
+        self.username = username
+        self.mobile_number = mobile_number
+        self.village_name = village_name
+        self.address = address
+
+    def __repr__(self):
+        return f'<user_name is {self.username}'
+
+
+class User_Cred(db.Model):
+    user_id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(150))
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+    def __repr__(self):
+        return f'user mail is {self.email}'
+
+
+class Fertilizers(db.Model):
+    product_id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.String(300))
+    unit_cost = db.Column(db.Float)
+    supplier = db.Column(db.String(100))
+    quantity = db.Column(db.Float)
+    bags = db.Column(db.Integer)
+    total_cost = db.Column(db.Float)
+
+    def __init__(self, product_name, unit_cost, supplier, quantity, bags, total_cost):
+        self.product_name = product_name
+        self.unit_cost = unit_cost
+        self.supplier = supplier
+        self.quantity = quantity
+        self.bags = bags
+        self.total_cost = total_cost
+
+    def __repr__(self):
+        return f'<product_name is {self.product_name}>'
+
+
+class Pestisides(db.Model):
+    product_id = db.Column(db.Integer, primary_key=True)
+    product_name = db.Column(db.String(200))
+    unit_cost = db.Column(db.Float)
+    supplier = db.Column(db.String(200))
+    unit_quantity = db.Column(db.Float)
+    cottons = db.Column(db.Integer)
+    total_cost = db.Column(db.Float)
+
+    def __init__(self, product_name, unit_cost, supplier, unit_quantity, cottons, total_cost):
+        self.unit_cost = unit_cost
+        self.product_name = product_name
+        self.total_cost = total_cost
+        self.supplier = supplier
+        self.unit_quantity = unit_quantity
+        self.cottons = cottons
+
+    def __repr__(self):
+        return f'fertilizer name is {self.product_name}'
+
+
 @app.route("/")
 def index():
     return render_template('index.html')
 
-@app.route("/home",methods=['GET'])
+
+@app.route("/home", methods=['GET'])
 def home():
-    return render_template("home.html")
+    return render_template('home.html')
 
-@app.route("/login",methods=['GET','POST'])
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    # connection = sqlite3.connect('identifier.sqlite')
     error = None
-
     if request.method == 'POST':
-        cur = mysql.connection.cursor()
-        cur.execute(''' SELECT * FROM SINEUP''')
-        users = cur.fetchall()
-
-        # cur = connection.cursor()
-        # cur.execute("SELECT * FROM SINEUP")
-        # users = cur.fetchall()
-
-        for user in users:
-            if request.form['Email'] == user[0] and request.form['password'] == user[1]:
-                mysql.connection.commit()
-                cur.close()
+        for user in User_Cred.query.all():
+            if user.email == request.form['Email'] and user.password == request.form['password']:
                 return redirect('/home')
 
-        error = 'Invalid credintials Try again'
+        error = 'Invalid Creditions try again'
 
     return render_template('login.html', error=error)
 
-@app.route('/sineup',methods=['POST','GET'])
+
+@app.route("/sineup", methods=['GET', 'POST'])
 def sineup():
+    error = None
+    if request.method == 'POST':
+        try:
+            email = request.form['Email']
+            password = request.form['password']
+            user = User_Cred(email, password)
+            db.session.add(user)
+        except:
+            error = 'Email Already Exists try with another'
+            db.session.rollback()
+            # raise
+        else:
+            db.session.commit()
+            return redirect('/login')
 
-    if request.method =='POST':
-        cur = mysql.connection.cursor()
-
-        cur.execute(''' INSERT INTO SINEUP VALUES( %s, %s)''',(request.form['Email'], request.form['password']))
-        
-        # "INSERT INTO SINEUP VALUES (?,?)", (request.form['Email'], request.form['password'])
-
-        mysql.connection.commit()
-        cur.close()
+    return render_template('sineup.html', error=error)
 
 
-        return redirect('/login')
-
-    return render_template('sineup.html')
-
-
-@app.route('/farmer', methods=['POST','PUT','GET'])
+@app.route("/farmer", methods=['GET', 'POST', 'PUT'])
 def create_farmer():
-
-    # print(request.content_type)
-
-
-
-    cur = mysql.connection.cursor()
-
     if request.method == 'PUT':
-
-        # print(content)
         content = request.json
-        cur.execute("""UPDATE FARMER_DETAILS SET FARMER_NAME= %s, MOBILE_NUMBER =%s,VILLAGE_NAME =%s, ADDRESS=%s WHERE FARMER_ID=%s""",
-                    (content['FARMER_NAME'],content['MOBILE_NUMBER'],content['VILLAGE'],content['ADDRESS'],content['FARMER_ID']))
+
+        update_farmer = Farmer.query.filterby(farmer_id=content['FARMER_ID']).first()
+        update_farmer.farmer_name = content['FARMER_NAME']
+        update_farmer.mobile_number = content['MOBILE_NUMBER']
+        update_farmer.village = content['MOBILE_NUMBER']
+        update_farmer.address = content['ADDRESS']
+
+        db.session.commit()
+        return jsonify('Changes Done Sucessfully')
 
     elif request.method == 'POST':
-        if request.content_type =='application/json':
 
-            content = request.json
-            cur.execute("""INSERT INTO FARMER_DETAILS VALUES(%s, %s, %s, %s, %s) """,
-                    (content['FARMER_ID'],content['FARMER_NAME'],content['MOBILE_NUMBER'],content['VILLAGE'],content['ADDRESS']))
+        farmer = Farmer(request.form['FARMER_NAME'], request.form['MOBILE_NUMBER'], request.form['VILLAGE'],
+                        request.form['ADDRESS'])
+        try:
+            db.session.add(farmer)
+        except DatabaseError:
+            db.session.rollback()
+            raise
         else:
-            cur.execute("""INSERT INTO FARMER_DETAILS VALUES(%s,%s,%s, %s, %s) """,
-                        (request.form['FARMER_ID'],request.form['FARMER_NAME'],request.form['MOBILE_NUMBER'] ,request.form['VILLAGE'],request.form['ADDRESS']))
+            db.session.commit()
+            return jsonify('Submitted Sucessfully')
 
-    else:
-        return render_template('create_farmer.html')
+    return render_template('create_farmer.html')
 
-    mysql.connection.commit()
-    cur.close()
 
-    return jsonify("Succss")
-
-@app.route('/get_farmer_data', methods=['GET'])
+@app.route("/get_farmer_data")
 def farmer_details():
-    cur = mysql.connection.cursor()
-    cur.execute("""SELECT * FROM FARMER_DETAILS""")
-    rows = cur.fetchall()
+    farmers = Farmer.query.all()
 
-    mysql.connection.commit()
-    cur.close()
-    return render_template('farmer_details.html', items=rows)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return render_template('farmer_details.html', farmers=farmers)
 
