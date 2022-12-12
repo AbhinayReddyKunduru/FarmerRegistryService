@@ -17,13 +17,14 @@
         <th>Village</th>
         <th>Address</th>
     </tr>
+
     {% for items in farmers %}
     <tr>
-    <td>{{items[0]}}</td>
-    <td>{{items[1]}}</td>
-    <td>{{items[2]}}</td>
-    <td>{{items[3]}}</td>
-    <td>{{items[4]}}</td>
+    <td>{{items.farmer_id}}</td>
+    <td>{{items.username}}</td>
+    <td>{{items.mobile_number}}</td>
+    <td>{{items.village_name}}</td>
+    <td>{{items.address}}</td>
     </tr>
     {% endfor %}
 </table>

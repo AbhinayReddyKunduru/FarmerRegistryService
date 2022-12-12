@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from sqlalchemy.exc import DatabaseError
+from flask import Flask, render_template, request, redirect, jsonify
+from services.Base import Base
 from models.farmer import Farmer
 from models.Pestisides import Pestisides
 from models.Fertilizer import Fertilizers
@@ -7,7 +7,6 @@ from models.User import User_Cred
 from services.database import session
 
 app = Flask(__name__)
-
 @app.route("/")
 def index():
     return render_template('index.html')
@@ -37,8 +36,10 @@ def sineup():
         email = request.form['Email']
         password = request.form['password']
         user = User_Cred(email, password)
+
         session.add(user)
         session.commit()
+
         return redirect('/login')
 
     return render_template('sineup.html', error=error)
@@ -53,7 +54,7 @@ def create_farmer():
         update_farmer.mobile_number = content['MOBILE_NUMBER']
         update_farmer.village = content['MOBILE_NUMBER']
         update_farmer.address = content['ADDRESS']
-
+        session.add(update_farmer)
         session.commit()
         return jsonify('Changes Done Sucessfully')
 

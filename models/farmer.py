@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import declarative_base
-Base = declarative_base()
+from services.Base import Base
 
 class Farmer(Base):
     __tablename__ = "farmer"
@@ -23,5 +22,3 @@ class Farmer(Base):
             self.village_name,
             self.address,
         )
-
-Base.metadata.create_all()

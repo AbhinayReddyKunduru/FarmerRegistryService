@@ -1,8 +1,6 @@
 from sqlalchemy import Column,Integer,String,Float
-from sqlalchemy.orm import declarative_base
+from services.Base import Base
 
-
-Base = declarative_base()
 class User_Cred(Base):
     __tablename__ = "user__cred"
     user_id = Column(Integer, primary_key=True, autoincrement="auto")

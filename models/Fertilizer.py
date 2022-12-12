@@ -1,7 +1,6 @@
 from sqlalchemy import Column,Integer,Float,String
-from sqlalchemy.orm import declarative_base
 
-Base = declarative_base()
+from services.Base import Base
 
 class Fertilizers(Base):
     __tablename__ = "Fertilizers"
