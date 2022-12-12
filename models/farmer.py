@@ -2,9 +2,8 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import declarative_base
 Base = declarative_base()
 
-
 class Farmer(Base):
-    __tablename__ = "Farmer"
+    __tablename__ = "farmer"
     farmer_id = Column(Integer, primary_key=True)
     username = Column(String(100), unique=True)
     mobile_number = Column(String(100), unique=True)
@@ -24,3 +23,5 @@ class Farmer(Base):
             self.village_name,
             self.address,
         )
+
+Base.metadata.create_all()
