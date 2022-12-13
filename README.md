@@ -1,5 +1,5 @@
 # FarmerRegistryService
-Iam are building Farmer Registry service using Flask, python libraries and 
+Iam building Farmer Registry service using Flask, python libraries and 
 Data management using sqlite3.
 
 
