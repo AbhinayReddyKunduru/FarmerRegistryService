@@ -1,5 +1,5 @@
-from sqlalchemy import Column,Integer,String,Float
-from services.Base import Base
+from sqlalchemy import Column,Integer,String
+from FarmerRegistryService.dao.Base import Base
 
 class User_Cred(Base):
     __tablename__ = "user__cred"

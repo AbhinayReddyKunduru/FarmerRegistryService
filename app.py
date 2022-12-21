@@ -1,10 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
-from services.Base import Base
-from models.farmer import Farmer
-from models.Pestisides import Pestisides
-from models.Fertilizer import Fertilizers
-from models.User import User_Cred
-from services.database import session
+from FarmerRegistryService.models.farmer import Farmer
+from FarmerRegistryService.models.User import User_Cred
+from FarmerRegistryService.dao.database import session
 
 app = Flask(__name__)
 @app.route("/")
@@ -13,6 +10,7 @@ def index():
 
 @app.route("/home", methods=['GET'])
 def home():
+
     return render_template('home.html')
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -70,7 +68,6 @@ def create_farmer():
 
     return render_template('create_farmer.html')
 
-
 @app.route("/get_farmer_data")
 def farmer_details():
     farmers = session.query(Farmer).all()
@@ -78,3 +75,5 @@ def farmer_details():
 
     return render_template('farmer_details.html', farmers=farmers)
 
+if __name__ =="__main__":
+        app.run(host="0.0.0.0", debug=True)

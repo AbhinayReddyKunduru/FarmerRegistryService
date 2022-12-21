@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from services.Base import Base
+from FarmerRegistryService.dao.Base import Base
 
 class Farmer(Base):
     __tablename__ = "farmer"
