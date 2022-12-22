@@ -38,4 +38,4 @@ services:
     - MYSQL_ROOT_PASSWORD=""
     - MYSQL_DATABASE=farmer_registry1
     ports:
-      - 3306:3306
+    - 3306:3306

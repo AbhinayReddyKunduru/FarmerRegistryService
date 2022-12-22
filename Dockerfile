@@ -1,13 +1,13 @@
+# Filename: Dockerfile
 FROM python:3.8-alpine
 
-WORKDIR /FarmerRegistryService
-COPY . /FarmerRegistryService
+COPY . /code
+WORKDIR /code
 
-RUN pip install -r requirments.txt
-#RUN apk --no-cache add python3+ py-mysqldb
-ENV PYTHONPATH "${PYTHONPATH}:/"
+RUN pip install -r FarmerRegistryService/requirments.txt
+ENV PYTHONPATH "${PYTHONPATH}:/FarmerRegistryService"
 EXPOSE 5000
 ENTRYPOINT [ "python" ]
-CMD [ "app.py" ]
+CMD [ "FarmerRegistryService/app.py" ]
 
 
