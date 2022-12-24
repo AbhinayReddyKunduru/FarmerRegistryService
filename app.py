@@ -4,6 +4,7 @@ from FarmerRegistryService.models.User import User_Cred
 from FarmerRegistryService.dao.database import session
 
 app = Flask(__name__)
+
 @app.route("/")
 def index():
     return render_template('index.html')
