@@ -41,7 +41,7 @@ LOW LEVEL DESIGN[LLD]:
            2) so that we can revertback to previous versions or update to existing versions.
      
 
-   ENTITIES or MODELS:
+    ENTITIES or MODELS:
    
         1)FARMER:
             Has the properties farmer_id,farmer_name,mobile_number,village_name,address.
@@ -58,13 +58,13 @@ LOW LEVEL DESIGN[LLD]:
         5)Amount:
             Has the properties farmer_id, Amount and date.
             
-   Docker:
+    Docker:
    
         1) We use Docker to test our app in differnt environment with only necessary resources and anyone can Impliment our app.
         1) We used Docker to containarise our app and MySQL server.
         2) We used Port Binding to Bind both containers.
         
-   Kubernetes:
+    Kubernetes:
    
         1) We use Kubernetes to deploy our app.
         
