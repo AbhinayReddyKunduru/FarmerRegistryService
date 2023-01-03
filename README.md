@@ -7,7 +7,9 @@ OBJECTIVE: 1)objective of this project is to make the flask app for entering far
            3)To learn about the new technologies like flask, SQL-Alchemy, Docker, kubernetes.
            
 HIGH LEVEL DESIGN[HLD]:
+
   ARCHITECTURE DIAGRAM:
+  
             ![image](https://user-images.githubusercontent.com/59594811/210315617-6e3782e5-a75a-409a-ac4e-72ab902362b2.png)
             
             
@@ -40,6 +42,7 @@ LOW LEVEL DESIGN[LLD]:
      
 
    ENTITIES or MODELS:
+   
         1)FARMER:
             Has the properties farmer_id,farmer_name,mobile_number,village_name,address.
        
@@ -56,18 +59,21 @@ LOW LEVEL DESIGN[LLD]:
             Has the properties farmer_id, Amount and date.
             
    Docker:
+   
         1) We use Docker to test our app in differnt environment with only necessary resources and anyone can Impliment our app.
         1) We used Docker to containarise our app and MySQL server.
         2) We used Port Binding to Bind both containers.
         
    Kubernetes:
+   
         1) We use Kubernetes to deploy our app.
         
    
 
 FUTURE IMPLIMENTATION:
+
         1) We can integrate our app for Frountend with ReactJS.
-        2) 
+        
 
 
 
