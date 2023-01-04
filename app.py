@@ -1,9 +1,26 @@
 from flask import Flask, render_template, request, redirect, jsonify
-from FarmerRegistryService.models.farmer import Farmer
-from FarmerRegistryService.models.User import User_Cred
+from FarmerRegistryService.models.Farmer import Farmer
+from FarmerRegistryService.models.User import UserCred
 from FarmerRegistryService.dao.database import session
+from flask_migrate import Migrate, MigrateCommand
+from sql_db import db
 
-app = Flask(__name__)
+
+def create_app():
+    app = Flask(__name__)
+    db.init_app(app)
+    Migrate(app, db)
+
+    # importing the models to make sure they are known to Flask-Migrate
+    from FarmerRegistryService.models.Farmer import Farmer
+    from FarmerRegistryService.models.User import UserCred
+    from FarmerRegistryService.models.Fertilizer import Fertilizers
+    from FarmerRegistryService.models.Pestisides import Pestisides
+
+    return app
+
+app = create_app()
+
 
 @app.route("/")
 def index():
@@ -18,7 +35,7 @@ def home():
 def login():
     error = None
     if request.method == 'POST':
-        for user in session.query(User_Cred).all():
+        for user in session.query(UserCred).all():
             if user.email == request.form['Email'] and user.password == request.form['password']:
                 return redirect('/home')
 
@@ -34,7 +51,7 @@ def sineup():
 
         email = request.form['Email']
         password = request.form['password']
-        user = User_Cred(email, password)
+        user = UserCred(email, password)
 
         session.add(user)
         session.commit()
@@ -72,7 +89,7 @@ def create_farmer():
 @app.route("/get_farmer_data")
 def farmer_details():
     farmers = session.query(Farmer).all()
-    # print(farmers)
+
 
     return render_template('farmer_details.html', farmers=farmers)
 

@@ -1,8 +1,10 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 
-engine = create_engine('mysql+pymysql://root:""@host.docker.internal/farmer_registry1', echo=True)
+
+engine = create_engine('mysql://root:''@localhost/farmer_registry1', echo=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
+
 
