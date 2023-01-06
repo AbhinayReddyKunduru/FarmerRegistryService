@@ -1,13 +1,12 @@
+from sqlalchemy import Column,Integer,String
 from FarmerRegistryService.dao.Base import Base
 from FarmerRegistryService.dao.database import engine
-from sql_db import db
 
-
-class UserCred(db.Model):
+class UserCred(Base):
     __tablename__ = "user__cred"
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement="auto")
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(150))
+    user_id = Column(Integer, primary_key=True, autoincrement="auto")
+    email = Column(String(150), unique=True)
+    password = Column(String(150))
 
     def __init__(self, email, password):
         self.email = email
@@ -17,6 +16,5 @@ class UserCred(db.Model):
         return "<User(email='%s', password='%s')>" % (
             self.email,
             self.password)
-
 
 Base.metadata.create_all(bind=engine)

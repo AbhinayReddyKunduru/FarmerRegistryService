@@ -1,13 +1,13 @@
+from sqlalchemy import Column, Integer, String
 from FarmerRegistryService.dao.Base import Base
 from FarmerRegistryService.dao.database import engine
-from sql_db import db
-class Farmer(db.Model):
+class Farmer(Base):
     __tablename__ = "farmer"
-    farmer_id = db.Column(db.Integer, primary_key=True)
-    farmer_name = db.Column(db.String(100), unique=True) #changed username to farmer_name wont work unti lwe change the database.
-    mobile_number = db.Column(db.String(100), unique=True)
-    village_name = db.Column(db.String(100))
-    address = db.Column(db.String(250))
+    farmer_id = Column(Integer, primary_key=True)
+    username = Column(String(100), unique=True)
+    mobile_number = Column(String(100), unique=True)
+    village_name = Column(String(100))
+    address = Column(String(250))
 
     def __init__(self, username, mobile_number, village_name, address):
         self.username = username
@@ -24,4 +24,3 @@ class Farmer(db.Model):
         )
 
 Base.metadata.create_all(bind=engine)
-

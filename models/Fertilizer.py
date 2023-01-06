@@ -1,17 +1,17 @@
+from sqlalchemy import Column,Integer,Float,String
+
 from FarmerRegistryService.dao.Base import Base
 from FarmerRegistryService.dao.database import engine
-from sql_db import db
 
-
-class Fertilizers(db.Model):
+class Fertilizers(Base):
     __tablename__ = "Fertilizers"
-    product_id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(300))
-    unit_cost = db.Column(db.Float)
-    supplier = db.Column(db.String(100))
-    quantity = db.Column(db.Float)
-    bags = db.Column(db.Integer)
-    total_cost = db.Column(db.Float)
+    product_id = Column(Integer, primary_key=True)
+    product_name = Column(String(300))
+    unit_cost = Column(Float)
+    supplier = Column(String(100))
+    quantity = Column(Float)
+    bags = Column(Integer)
+    total_cost = Column(Float)
 
     def __init__(self, product_name, unit_cost, supplier, quantity, bags, total_cost):
         self.product_name = product_name
@@ -24,5 +24,6 @@ class Fertilizers(db.Model):
     def __repr__(self):
         return "<Fertilizers(name='%s',unit_cost='%s',supplier='%s',quantity='%s', " \
                "bags='%s',total_cost='%s')>"%(self.product_name,self.unit_cost,self.supplier,self.quantity,self.bags,self.total_cost)
+
 
 Base.metadata.create_all(bind=engine)
