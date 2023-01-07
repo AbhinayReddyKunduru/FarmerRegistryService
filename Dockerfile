@@ -1,13 +1,14 @@
 # Filename: Dockerfile
 FROM python:3.8-alpine
 
-COPY . /code
-WORKDIR /code
+COPY . /FarmerRegistryService
+WORKDIR /FarmerRegistryService
 
-RUN pip install -r FarmerRegistryService/requirments.txt
-ENV PYTHONPATH "${PYTHONPATH}:/FarmerRegistryService"
+RUN pip install -r requirments.txt
+ENV PYTHONPATH "${PYTHONPATH}:/"
+
 EXPOSE 5000
 ENTRYPOINT [ "python" ]
-CMD [ "FarmerRegistryService/app.py" ]
+CMD [ "app.py" ]
 
 
