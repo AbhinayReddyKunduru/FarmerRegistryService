@@ -2,11 +2,17 @@ version: "2"
 services:
   app:
     build: .
-
-    links:
+#    links:
+#      - db
+    depends_on:
       - db
     ports:
       - "5000:5000"
+    volumes:
+      - myvolume1:/FarmerRegistryService/
+    networks:
+      - mynet
+    restart: "always"
 
   db:
     image: mysql:5.7
@@ -17,3 +23,16 @@ services:
 #      MYSQL_ROOT_USER: root
 #      MYSQL_PASSWORD: root
       MYSQL_DATABASE: mydb
+    volumes:
+      - myvolume2:/var/lib/mysql
+    networks:
+      - mynet
+
+volumes:
+  myvolume1:
+  myvolume2:
+
+networks:
+  mynet:
+    driver: bridge
+
