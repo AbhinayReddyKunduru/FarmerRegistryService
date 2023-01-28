@@ -1,0 +1,39 @@
+# deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: farmer-registry-service-deploy
+  labels:
+    type: restapi
+spec:
+  selector:
+    matchLabels:
+      app: farmer_registry_service
+  replicas: 3 # tells deployment to run 3 pods matching the template
+
+  template:
+    metadata:
+      name: farmer_registry_service-tmpl
+      labels:
+        app: farmer_registry_service
+    spec:
+      containers:
+        - name: farmer-registry-service
+          image: abhinayreddydocker/dockerhub:farmerregistryservice
+          ports:
+            - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: farmer-registry-service-svc
+spec:
+  selector:
+    app: farmer_registry_service
+  ports:
+  - port: 6000
+    targetPort: 5000
+  type: LoadBalancer
